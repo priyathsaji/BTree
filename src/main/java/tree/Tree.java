@@ -8,7 +8,7 @@ public interface Tree {
 
     void delete(int value);
 
-    void print();
+    void print() throws PageNotFoundException;
 
     void contains();
 

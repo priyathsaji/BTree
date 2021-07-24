@@ -7,11 +7,15 @@ import tree.exceptions.PageNotFoundException;
 public class App {
 
     public static void main(String args[]) throws PageNotFoundException {
-        Tree tree = new BTree(2);
+        Tree tree = new BTree(3);
 
-        for(int i=0;i<10;i++){
+        int n = 11;
+        for (int i = 0; i < n; i++) {
             tree.insert(i);
+            tree.insert(n - (i + 1));
         }
+
+        tree.print();
 
     }
 }

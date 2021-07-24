@@ -45,9 +45,9 @@ public class BTree implements Tree {
         return page;
     }
 
-    public <T> List<T> subList(List<T> list, int start, int end){
+    public <T> List<T> subList(List<T> list, int start, int end) {
         List<T> data2Return = new ArrayList<>();
-        for( int i =start;i<Math.min(end,list.size());i++){
+        for (int i = start; i < Math.min(end, list.size()); i++) {
             data2Return.add(list.get(i));
         }
         return data2Return;
@@ -66,7 +66,7 @@ public class BTree implements Tree {
             if (current.isLeaf()) {
                 if (current.isPageFull()) {
                     List<PageItem> items = current.split(value);
-                    Page newPage = newPage(subList(items,1, items.size()));
+                    Page newPage = newPage(subList(items, 1, items.size()));
                     PageItem promotedItem = items.get(0);
                     promotedItem.setRight(newPage.name());
                     promotedItem.setLeft(current.name());
@@ -77,7 +77,7 @@ public class BTree implements Tree {
                         Page parent = stack.pop();
                         if (parent.isPageFull()) {
                             items = parent.split(promotedItem);
-                            newPage = newPage(subList(items,1, items.size()));
+                            newPage = newPage(subList(items, 1, items.size()));
                             newPage.makeParentNode();
                             promotedItem = items.get(0);
                             promotedItem.setRight(newPage.name());
@@ -104,22 +104,28 @@ public class BTree implements Tree {
                 boolean isPageFound = false;
                 for (PageItem item : current.getPageItemList()) {
                     if (item.getValue() > value) {
-                        current = getPage(item.getLeft());
-                        item.setLeft(current.name());
-                        if (prevItem != null) {
-                            prevItem.setRight(current.name());
-                        }
-                        isPageFound = true;
+                        break;
                     }
                     prevItem = item;
+//                        current = getPage(item.getLeft());
+//                        item.setLeft(current.name());
+//                        if (prevItem != null) {
+//                            prevItem.setRight(current.name());
+//                        }
+//                        isPageFound = true;
+//                    }
+//                    prevItem = item;
                 }
-                if (!isPageFound) {
-                    if (prevItem != null) {
-                        current = getPage(prevItem.getRight());
-                    } else {
-                        throw new PageNotFoundException("Error while getting required Page");
-                    }
+//                if (!isPageFound) {
+                if (prevItem == null) {
+                    current = getPage(current.getPageItemList().get(0).getLeft());
+                } else {
+                    current = getPage(prevItem.getRight());
                 }
+//                else{
+//                    throw new PageNotFoundException("Error while getting required Page");
+//                }
+//                }
             }
         }
 
@@ -131,7 +137,34 @@ public class BTree implements Tree {
 
     }
 
-    public void print() {
+    private void print(List<Page> something) throws PageNotFoundException {
+        List<Page> page = new ArrayList<>();
+        for (Page item : something) {
+            if (item == null) {
+                System.out.println("   |   ");
+                continue;
+            }
+            for (PageItem pageItem : item.getPageItemList()) {
+                System.out.print(pageItem.getValue() + "   ");
+                if (!item.isLeaf() && pageStore.contains(pageItem.getLeft())) {
+                    page.add(pageStore.get(pageItem.getLeft()));
+                }
+            }
+            if (!item.isLeaf() && pageStore.contains(item.getPageItemList().get(item.getPageItemList().size() - 1).getRight())) {
+                page.add(pageStore.get(item.getPageItemList().get(item.getPageItemList().size() - 1).getRight()));
+            }
+
+            System.out.print("   |   ");
+        }
+
+        if (page.size() != 0) {
+            System.out.println("\n");
+            print(page);
+        }
+    }
+
+    public void print() throws PageNotFoundException {
+        print(Collections.singletonList(start));
 
     }
 

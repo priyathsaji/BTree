@@ -50,15 +50,21 @@ public class Page {
         int index = -1;
         for (int i = 0; i < pageItems.size(); i++) {
             if (value < pageItems.get(i).getValue()) {
-                index = i;
+                break;
             }
+            index = i;
         }
 
-        if (index == -1) {
-            pageItems.add(new PageItem(value));
-        } else {
-            pageItems.add(index, new PageItem(value));
-        }
+//        if (index == -1) {
+//            pageItems.add(new PageItem(value));
+//        } else {
+//            if (index - 1 < 0) {
+//                pageItems.add(index, new PageItem(value));
+//            } else {
+//                pageItems.add(index - 1, new PageItem(value));
+//            }
+//        }
+        pageItems.add(index + 1, new PageItem(value));
     }
 
     public List<PageItem> split(int value) {
@@ -66,7 +72,7 @@ public class Page {
         int startIndex = pageItems.size() / 2;
 
         List<PageItem> pageItems2Return = new LinkedList<>();
-        for(int i=startIndex;i<pageItems.size();i++){
+        for (int i = startIndex; i < pageItems.size(); i++) {
             pageItems2Return.add(pageItems.get(i));
         }
 //        List<PageItem> pageItems2Return = pageItems.subList(startIndex, pageItems.size());
@@ -80,19 +86,23 @@ public class Page {
         int index = -1;
         for (int i = 0; i < pageItems.size(); i++) {
             if (promotedItem.getValue() < pageItems.get(i).getValue()) {
-                index = i;
+                break;
             }
+            index = i;
         }
-        if (index == -1) {
-            pageItems.get(pageItems.size() - 1).setRight(promotedItem.getLeft());
-            pageItems.add(promotedItem);
-        } else {
+        if (index >= 0) {
             pageItems.get(index).setRight(promotedItem.getLeft());
-            if (index + 1 < pageItems.size()) {
-                pageItems.get(index + 1).setLeft(promotedItem.getRight());
-            }
-            pageItems.add(index + 1, promotedItem);
         }
+//        else {
+//            String temp = promotedItem.getRight();
+//            promotedItem.setRight(pageItems.get(0).getLeft());
+//            pageItems.get(0).setRight(temp);
+//        }
+        if (pageItems.size() > index + 1) {
+            pageItems.get(index + 1).setLeft(promotedItem.getRight());
+        }
+        pageItems.add(index + 1, promotedItem);
+
     }
 
     public List<PageItem> split(PageItem promotedItem) {
@@ -101,7 +111,7 @@ public class Page {
         int startIndex = pageItems.size() / 2;
 
         List<PageItem> pageItems2Return = new LinkedList<>();
-        for(int i=startIndex;i<pageItems.size();i++){
+        for (int i = startIndex; i < pageItems.size(); i++) {
             pageItems2Return.add(pageItems.get(i));
         }
 //        List<PageItem> pageItems2Return = pageItems.subList(pageItems.size() / 2 - 1, pageItems.size());
@@ -112,6 +122,6 @@ public class Page {
     }
 
     public void makeParentNode() {
-        this.isLeafPage =  false;
+        this.isLeafPage = false;
     }
 }
