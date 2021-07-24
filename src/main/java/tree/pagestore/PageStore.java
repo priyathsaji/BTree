@@ -6,7 +6,7 @@ import tree.exceptions.PageNotFoundException;
 import java.util.Optional;
 
 public interface PageStore {
-    Page get(String pageName) throws PageNotFoundException;
+    Page get(String pageName);
 
     Page getOrDefault(String pageName, Page page);
 

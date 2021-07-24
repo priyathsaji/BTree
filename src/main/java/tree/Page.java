@@ -54,16 +54,6 @@ public class Page {
             }
             index = i;
         }
-
-//        if (index == -1) {
-//            pageItems.add(new PageItem(value));
-//        } else {
-//            if (index - 1 < 0) {
-//                pageItems.add(index, new PageItem(value));
-//            } else {
-//                pageItems.add(index - 1, new PageItem(value));
-//            }
-//        }
         pageItems.add(index + 1, new PageItem(value));
     }
 
@@ -75,10 +65,7 @@ public class Page {
         for (int i = startIndex; i < pageItems.size(); i++) {
             pageItems2Return.add(pageItems.get(i));
         }
-//        List<PageItem> pageItems2Return = pageItems.subList(startIndex, pageItems.size());
         pageItems.subList(startIndex, pageItems.size()).clear();
-
-//        this.isLeafPage = false;
         return pageItems2Return;
     }
 
@@ -93,35 +80,26 @@ public class Page {
         if (index >= 0) {
             pageItems.get(index).setRight(promotedItem.getLeft());
         }
-//        else {
-//            String temp = promotedItem.getRight();
-//            promotedItem.setRight(pageItems.get(0).getLeft());
-//            pageItems.get(0).setRight(temp);
-//        }
         if (pageItems.size() > index + 1) {
             pageItems.get(index + 1).setLeft(promotedItem.getRight());
         }
         pageItems.add(index + 1, promotedItem);
-
     }
 
     public List<PageItem> split(PageItem promotedItem) {
         add(promotedItem);
-
         int startIndex = pageItems.size() / 2;
-
         List<PageItem> pageItems2Return = new LinkedList<>();
         for (int i = startIndex; i < pageItems.size(); i++) {
             pageItems2Return.add(pageItems.get(i));
         }
-//        List<PageItem> pageItems2Return = pageItems.subList(pageItems.size() / 2 - 1, pageItems.size());
         pageItems.subList(startIndex, pageItems.size()).clear();
-
-//        this.isLeafPage = false;
         return pageItems2Return;
     }
 
     public void makeParentNode() {
         this.isLeafPage = false;
     }
+
+
 }

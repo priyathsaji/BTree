@@ -166,6 +166,10 @@ public class BTree implements Tree {
     public void print() throws PageNotFoundException {
         print(Collections.singletonList(start));
 
+
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+        new BTreeIterator(start,pageStore).print();
     }
 
     public void contains() {

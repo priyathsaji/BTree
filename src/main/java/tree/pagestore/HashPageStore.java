@@ -11,16 +11,16 @@ public class HashPageStore implements PageStore {
 
     Map<String, Page> pageStore = new HashMap<>();
 
-    public Page get(String pageName) throws PageNotFoundException {
+    public Page get(String pageName) {
         if (pageStore.containsKey(pageName)) {
             return pageStore.get(pageName);
         }
-        throw new PageNotFoundException("Unable to find the page by name :" + pageName);
+        return null;
     }
 
     @Override
     public Page getOrDefault(String pageName, Page page) {
-        if(pageStore.containsKey(pageName)){
+        if (pageStore.containsKey(pageName)) {
             return pageStore.get(pageName);
         }
 
@@ -38,6 +38,6 @@ public class HashPageStore implements PageStore {
 
     @Override
     public void put(String pageName, Page page) {
-        pageStore.put(pageName,page);
+        pageStore.put(pageName, page);
     }
 }
